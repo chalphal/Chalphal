@@ -31,6 +31,11 @@ const AuthenticationCheck = ({ children, guest }: { children: ReactNode; guest?:
 		return <UsernameCheck>{children}</UsernameCheck>;
 	}
 
+	const countrySelected = sessionStorage.getItem('countrySelected');
+	if (!countrySelected) {
+		return <LoginPage defaultRoute='country-selection' />;
+	}
+
 	return <LoginPage />;
 };
 

@@ -5,6 +5,7 @@ import { useId } from 'react';
 import type { ReactElement } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
+import PreferencesCountrySection from './PreferencesCountrySection';
 import PreferencesGlobalSection from './PreferencesGlobalSection';
 import PreferencesHighlightsSection from './PreferencesHighlightsSection';
 import PreferencesLocalizationSection from './PreferencesLocalizationSection';
@@ -80,6 +81,7 @@ const AccountPreferencesPage = (): ReactElement => {
 					<Box id={preferencesFormId} is='form' maxWidth='x600' w='full' alignSelf='center' onSubmit={handleSubmit(handleSaveData)}>
 						<Accordion>
 							<PreferencesLocalizationSection />
+							<PreferencesCountrySection />
 							<PreferencesGlobalSection />
 							<PreferencesUserPresenceSection />
 							<PreferencesNotificationsSection />
