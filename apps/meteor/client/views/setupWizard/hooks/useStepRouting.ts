@@ -18,7 +18,7 @@ export const useStepRouting = (): [number, Dispatch<SetStateAction<number>>] => 
 					return 2;
 				}
 				default: {
-					return 1;
+					return 0;
 				}
 			}
 		})();
@@ -28,7 +28,7 @@ export const useStepRouting = (): [number, Dispatch<SetStateAction<number>>] => 
 		}
 
 		const step = parseInt(param, 10);
-		if (step && Number.isFinite(step) && step >= 1) {
+		if (step && Number.isFinite(step) && step >= 0) {
 			return step;
 		}
 
@@ -37,13 +37,13 @@ export const useStepRouting = (): [number, Dispatch<SetStateAction<number>>] => 
 
 	useEffect(() => {
 		switch (true) {
-			case (currentStep === 1 || currentStep === 2) && hasOrganizationData: {
+			case (currentStep === 0 || currentStep === 1 || currentStep === 2) && hasOrganizationData: {
 				setCurrentStep(3);
 				router.navigate(`/setup-wizard/3`);
 				break;
 			}
 
-			case currentStep === 1 && hasAdminRole: {
+			case (currentStep === 0 || currentStep === 1) && hasAdminRole: {
 				setCurrentStep(2);
 				router.navigate(`/setup-wizard/2`);
 				break;

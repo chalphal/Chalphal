@@ -262,7 +262,19 @@ type CountrySelectionData = {
 	country: string;
 };
 
-export const CountrySelectionForm = ({ setLoginRoute }: { setLoginRoute: DispatchLoginRouter }): ReactElement => {
+export const CountrySelectionForm = ({ 
+	setLoginRoute, 
+	onCountrySelect,
+	currentStep,
+	stepCount,
+	initialValue 
+}: { 
+	setLoginRoute: DispatchLoginRouter;
+	onCountrySelect?: (country: string) => void;
+	currentStep?: number;
+	stepCount?: number;
+	initialValue?: string;
+}): ReactElement => {
 	const { t } = useTranslation();
 	const [showAllCountries, setShowAllCountries] = useState(false);
 
@@ -271,7 +283,9 @@ export const CountrySelectionForm = ({ setLoginRoute }: { setLoginRoute: Dispatc
 		watch,
 		control,
 		formState: { errors },
-	} = useForm<CountrySelectionData>();
+	} = useForm<CountrySelectionData>({
+		defaultValues: { country: initialValue || '' }
+	});
 
 	const selectedCountry = watch('country');
 
@@ -281,9 +295,13 @@ export const CountrySelectionForm = ({ setLoginRoute }: { setLoginRoute: Dispatc
 			return;
 		}
 
-		localStorage.setItem('selectedCountry', data.country);
-		sessionStorage.setItem('countrySelected', 'true');
-		setLoginRoute('register');
+		if (onCountrySelect) {
+			onCountrySelect(data.country);
+		} else {
+			localStorage.setItem('selectedCountry', data.country);
+			sessionStorage.setItem('countrySelected', 'true');
+			setLoginRoute('register');
+		}
 	};
 
 	const countryOptions = showAllCountries ? ALL_COUNTRIES : PRIMARY_COUNTRIES;
@@ -293,6 +311,11 @@ export const CountrySelectionForm = ({ setLoginRoute }: { setLoginRoute: Dispatc
 			<Form.Header>
 				<Form.Title>{t('Select Your Country')}</Form.Title>
 				<Form.Subtitle>{t('Choose your country to access the appropriate workspace')}</Form.Subtitle>
+				{currentStep !== undefined && stepCount !== undefined && (
+					<Form.Subtitle>
+						{t('Step_count', { current: currentStep + 1, total: stepCount })}
+					</Form.Subtitle>
+				)}
 			</Form.Header>
 			<Form.Container>
 				<Field>
