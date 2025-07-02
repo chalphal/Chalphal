@@ -262,13 +262,13 @@ type CountrySelectionData = {
 	country: string;
 };
 
-export const CountrySelectionForm = ({ 
-	setLoginRoute, 
+export const CountrySelectionForm = ({
+	setLoginRoute,
 	onCountrySelect,
 	currentStep,
 	stepCount,
-	initialValue 
-}: { 
+	initialValue,
+}: {
 	setLoginRoute: DispatchLoginRouter;
 	onCountrySelect?: (country: string) => void;
 	currentStep?: number;
@@ -284,7 +284,7 @@ export const CountrySelectionForm = ({
 		control,
 		formState: { errors },
 	} = useForm<CountrySelectionData>({
-		defaultValues: { country: initialValue || '' }
+		defaultValues: { country: initialValue || '' },
 	});
 
 	const selectedCountry = watch('country');
@@ -312,9 +312,7 @@ export const CountrySelectionForm = ({
 				<Form.Title>{t('Select Your Country')}</Form.Title>
 				<Form.Subtitle>{t('Choose your country to access the appropriate workspace')}</Form.Subtitle>
 				{currentStep !== undefined && stepCount !== undefined && (
-					<Form.Subtitle>
-						{t('Step_count', { current: currentStep + 1, total: stepCount })}
-					</Form.Subtitle>
+					<Form.Subtitle>{t('Step_count', { current: currentStep + 1, total: stepCount })}</Form.Subtitle>
 				)}
 			</Form.Header>
 			<Form.Container>

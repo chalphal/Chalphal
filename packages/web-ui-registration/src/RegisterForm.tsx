@@ -77,7 +77,7 @@ export const RegisterForm = ({ setLoginRoute }: { setLoginRoute: DispatchLoginRo
 		clearErrors,
 		control,
 		formState: { errors },
-	} = useForm<LoginRegisterPayload>({ 
+	} = useForm<LoginRegisterPayload>({
 		mode: 'onBlur',
 		defaultValues: {
 			country: selectedCountry,
