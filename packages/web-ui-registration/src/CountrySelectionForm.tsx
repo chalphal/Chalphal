@@ -1,9 +1,9 @@
 import { Box, Button, Field, FieldLabel, FieldRow, Select, Callout, FieldError } from '@rocket.chat/fuselage';
 import { Form } from '@rocket.chat/layout';
-import { useTranslation } from '@rocket.chat/ui-contexts';
 import type { ReactElement } from 'react';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import type { DispatchLoginRouter } from './hooks/useLoginRouter';
 
@@ -267,9 +267,9 @@ export const CountrySelectionForm = ({ setLoginRoute }: { setLoginRoute: Dispatc
 	const [showAllCountries, setShowAllCountries] = useState(false);
 
 	const {
-		register,
 		handleSubmit,
 		watch,
+		control,
 		formState: { errors },
 	} = useForm<CountrySelectionData>();
 
@@ -300,16 +300,23 @@ export const CountrySelectionForm = ({ setLoginRoute }: { setLoginRoute: Dispatc
 						{t('Country')}
 					</FieldLabel>
 					<FieldRow>
-						<Select
-							{...register('country', {
+						<Controller
+							name='country'
+							control={control}
+							rules={{
 								required: t('Required_field', { field: t('Country') }),
-							})}
-							placeholder={t('Select a country')}
-							options={countryOptions.map((country) => [country.key, t(country.i18nLabel)])}
-							error={errors?.country?.message}
-							aria-required='true'
-							aria-invalid={errors.country ? 'true' : 'false'}
-							id='country'
+							}}
+							render={({ field }) => (
+								<Select
+									{...field}
+									placeholder={t('Select a country')}
+									options={countryOptions.map((country) => [country.key, t(country.i18nLabel)])}
+									error={errors?.country?.message}
+									aria-required='true'
+									aria-invalid={errors.country ? 'true' : 'false'}
+									id='country'
+								/>
+							)}
 						/>
 					</FieldRow>
 					{errors.country && <FieldError>{errors.country.message}</FieldError>}
