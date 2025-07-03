@@ -31,6 +31,9 @@ type LoginRegisterPayload = {
 	password: string;
 	email: string;
 	reason: string;
+	country: string;
+	city: string;
+	profession: string;
 };
 
 export const RegisterForm = ({ setLoginRoute }: { setLoginRoute: DispatchLoginRouter }): ReactElement => {
@@ -52,6 +55,9 @@ export const RegisterForm = ({ setLoginRoute }: { setLoginRoute: DispatchLoginRo
 	const passwordId = useId();
 	const passwordConfirmationId = useId();
 	const reasonId = useId();
+	const countryId = useId();
+	const cityId = useId();
+	const professionId = useId();
 
 	const registerUser = useRegisterMethod();
 	const customFields = useAccountsCustomFields();
@@ -59,6 +65,8 @@ export const RegisterForm = ({ setLoginRoute }: { setLoginRoute: DispatchLoginRo
 	const [serverError, setServerError] = useState<string | undefined>(undefined);
 
 	const dispatchToastMessage = useToastMessageDispatch();
+
+	const selectedCountry = localStorage.getItem('selectedCountry') || '';
 
 	const {
 		register,
@@ -69,7 +77,12 @@ export const RegisterForm = ({ setLoginRoute }: { setLoginRoute: DispatchLoginRo
 		clearErrors,
 		control,
 		formState: { errors },
-	} = useForm<LoginRegisterPayload>({ mode: 'onBlur' });
+	} = useForm<LoginRegisterPayload>({
+		mode: 'onBlur',
+		defaultValues: {
+			country: selectedCountry,
+		},
+	});
 
 	const { password } = watch();
 	const passwordIsValid = useValidatePassword(password);
@@ -290,6 +303,75 @@ export const RegisterForm = ({ setLoginRoute }: { setLoginRoute: DispatchLoginRo
 							)}
 						</Field>
 					)}
+					<Field>
+						<FieldLabel required htmlFor={countryId}>
+							{t('Country')}
+						</FieldLabel>
+						<FieldRow>
+							<TextInput
+								{...register('country', {
+									required: t('Required_field', { field: t('Country') }),
+								})}
+								error={errors?.country?.message}
+								aria-required='true'
+								aria-invalid={errors.country ? 'true' : 'false'}
+								aria-describedby={`${countryId}-error`}
+								id={countryId}
+								disabled
+							/>
+						</FieldRow>
+						{errors.country && (
+							<FieldError aria-live='assertive' id={`${countryId}-error`}>
+								{errors.country.message}
+							</FieldError>
+						)}
+					</Field>
+					<Field>
+						<FieldLabel required htmlFor={cityId}>
+							{t('City')}
+						</FieldLabel>
+						<FieldRow>
+							<TextInput
+								{...register('city', {
+									required: t('Required_field', { field: t('City') }),
+								})}
+								error={errors?.city?.message}
+								aria-required='true'
+								aria-invalid={errors.city ? 'true' : 'false'}
+								aria-describedby={`${cityId}-error`}
+								id={cityId}
+								placeholder={t('Enter your city')}
+							/>
+						</FieldRow>
+						{errors.city && (
+							<FieldError aria-live='assertive' id={`${cityId}-error`}>
+								{errors.city.message}
+							</FieldError>
+						)}
+					</Field>
+					<Field>
+						<FieldLabel required htmlFor={professionId}>
+							{t('Profession')}
+						</FieldLabel>
+						<FieldRow>
+							<TextInput
+								{...register('profession', {
+									required: t('Required_field', { field: t('Profession') }),
+								})}
+								error={errors?.profession?.message}
+								aria-required='true'
+								aria-invalid={errors.profession ? 'true' : 'false'}
+								aria-describedby={`${professionId}-error`}
+								id={professionId}
+								placeholder={t('Enter your profession')}
+							/>
+						</FieldRow>
+						{errors.profession && (
+							<FieldError aria-live='assertive' id={`${professionId}-error`}>
+								{errors.profession.message}
+							</FieldError>
+						)}
+					</Field>
 					<CustomFieldsForm formName='customFields' formControl={control} metadata={customFields} />
 					{serverError && <Callout type='danger'>{serverError}</Callout>}
 				</FieldGroup>

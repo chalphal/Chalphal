@@ -16,7 +16,7 @@ declare module '@rocket.chat/ddp-client' {
 	interface ServerMethods {
 		registerUser(
 			formData:
-				| { email: string; pass: string; username: IUser['username']; name: string; secretURL?: string; reason?: string }
+				| { email: string; pass: string; username: IUser['username']; name: string; secretURL?: string; reason?: string; country?: string; city?: string; profession?: string }
 				| { email?: null },
 		):
 			| {
@@ -92,6 +92,15 @@ Meteor.methods<ServerMethods>({
 			name: formData.name,
 			reason: formData.reason,
 		};
+
+		if (formData.country) {
+			const customFields = {
+				country: formData.country,
+				city: formData.city,
+				profession: formData.profession,
+			};
+			Object.assign(userData, { customFields });
+		}
 
 		let userId;
 		try {

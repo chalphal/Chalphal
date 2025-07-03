@@ -38,6 +38,7 @@ export type AccountPreferencesData = {
 	masterVolume?: number;
 	notificationsSoundVolume?: number;
 	voipRingerVolume?: number;
+	country?: string;
 };
 
 export const useAccountPreferencesValues = (): AccountPreferencesData => {
@@ -76,6 +77,7 @@ export const useAccountPreferencesValues = (): AccountPreferencesData => {
 	const masterVolume = useUserPreference<number>('masterVolume', 100);
 	const notificationsSoundVolume = useUserPreference<number>('notificationsSoundVolume', 100);
 	const voipRingerVolume = useUserPreference<number>('voipRingerVolume', 100);
+	const country = useUserPreference<string>('country');
 
 	return {
 		language,
@@ -107,5 +109,6 @@ export const useAccountPreferencesValues = (): AccountPreferencesData => {
 		masterVolume,
 		notificationsSoundVolume,
 		voipRingerVolume,
+		country,
 	};
 };

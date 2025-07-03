@@ -31,6 +31,7 @@ const AuthenticationCheck = ({ children, guest }: { children: ReactNode; guest?:
 		return <UsernameCheck>{children}</UsernameCheck>;
 	}
 
+
 	return <LoginPage />;
 };
 
